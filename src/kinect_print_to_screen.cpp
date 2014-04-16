@@ -61,9 +61,9 @@ int main(int argc, char **argv)
   tf::TransformListener listener;
   ros::Subscriber sub = n.subscribe("/nav_kinect/depth/points", 1000, chatterCallback);
 // ros::Subscriber sub = n.subscribe("/camera/depth/points",1000,chatterCallback);
-
   ros::Publisher vel = n.advertise<geometry_msgs::Twist>("/cmd_vel", 10);
   geometry_msgs::Twist velocity_msg;
+
   ros::Rate r(10);
   while(ros::ok()) {
 
@@ -76,16 +76,13 @@ int main(int argc, char **argv)
     }
     min.x -= trans.getOrigin().x();
 
-    // causes the robot to turn if nearest x point is detected outside this field
     if ((min.x > 0.1 || min.x < -0.1) && min.z < 0.7) {
       velocity_msg.angular.z = 0.2 * atan2(min.x, min.z) ;
       velocity_msg.linear.x = 0;
-    // moves the robot forward if nearest z point is outside this field
     } else if (min.z > 0.7 && min.z < 1.2) {  
       velocity_msg.linear.x = 0.6 * sqrt(pow(min.z, 2) + pow(min.x, 2));
       velocity_msg.angular.z = 0;
       if (min.z < 0.5) velocity_msg.linear.x = -0.5;
-    // the robot does not move
     } else {
       velocity_msg.linear.x = .1;
       velocity_msg.angular.z = 0;
@@ -95,7 +92,7 @@ int main(int argc, char **argv)
     ros::spinOnce();
     r.sleep();
   }
-  velocity_msg.linear.x = -0.7;
+  velocity_msg.linear.x = -0.6;
   velocity_msg.angular.z = 0;
   return 0;
 }
