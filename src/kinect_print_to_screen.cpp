@@ -76,14 +76,19 @@ int main(int argc, char **argv)
     }
     min.x -= trans.getOrigin().x();
 
-    if ((min.x > 0.1 || min.x < -0.1) && min.z < 0.7) {
+    if ((min.x > 0.1 || min.x < -0.1) && min.z < 0.7) 
+    {
       velocity_msg.angular.z = 0.2 * atan2(min.x, min.z) ;
       velocity_msg.linear.x = 0;
-    } else if (min.z > 0.7 && min.z < 1.2) {  
-      velocity_msg.linear.x = 0.6 * sqrt(pow(min.z, 2) + pow(min.x, 2));
+    } else 
+    if (min.z > 0.65 && min.z < 1.3) 
+    {  
+      velocity_msg.linear.x = 0.6 * sqrt(min.z*min.z + min.x*min.x);
       velocity_msg.angular.z = 0;
-      if (min.z < 0.5) velocity_msg.linear.x = -0.5;
-    } else {
+      if (min.z < 0.5) 
+        velocity_msg.linear.x = -0.5;
+    } else 
+    {
       velocity_msg.linear.x = .1;
       velocity_msg.angular.z = 0;
     }
