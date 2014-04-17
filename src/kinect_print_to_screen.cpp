@@ -29,9 +29,6 @@ void chatterCallback(const sensor_msgs::PointCloud2::ConstPtr msg)
     pcl::fromPCLPointCloud2(pcl_pc2, pcl_cloud);
    
     pcl::PointCloud < pcl::PointXYZ >::iterator myIterator;
-    // double z = 100;
-    // double x;
-    // double y;
     Point current = {1024,128,128};
 
     for(myIterator = pcl_cloud.begin();myIterator != pcl_cloud.end();myIterator++)
@@ -40,7 +37,9 @@ void chatterCallback(const sensor_msgs::PointCloud2::ConstPtr msg)
         current.z = myIterator->z;
         current.x = -1 * myIterator->x;
         current.y = myIterator->y;
-        std::cout << "Min X: " << current.x << " Min Y: " << current.y << " Min Z: " << current.z << std::endl;
+        std::cout << "Min X: " << current.x 
+                      << " Min Y: " << current.y
+                           << " Min Z: " << current.z << std::endl;
       }
     }
 
